@@ -52,11 +52,13 @@ if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err, promise) => {
-  console.log(`Error: ${err.message}`);
-  if (server) {
-    server.close(() => process.exit(1));
-  } else {
-    process.exit(1);
+  console.error(`Unhandled Rejection: ${err.message}`);
+  if (!process.env.VERCEL) {
+    if (server) {
+      server.close(() => process.exit(1));
+    } else {
+      process.exit(1);
+    }
   }
 });
 
